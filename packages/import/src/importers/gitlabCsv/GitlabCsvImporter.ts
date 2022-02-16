@@ -68,9 +68,10 @@ export class GitlabCsvImporter implements Importer {
 
       importData.issues.push({
         title: row.Title,
-        description: row.Description,
+        description: this.addUrl2Description(row),
         url: row.URL,
         assigneeId: row.Assignee,
+        status: this.getStatus(tags),
         labels,
       });
 
@@ -85,6 +86,22 @@ export class GitlabCsvImporter implements Importer {
 
     return importData;
   };
+
+  private getStatus(tags: string[]): string {
+    let status = "";
+
+    tags.forEach(tag => {
+      if (tag.startsWith("workflow")) {
+        status = tag.replace("workflow::", "");
+      }
+    });
+
+    return status;
+  }
+
+  private addUrl2Description(issue: GitlabIssueType): string {
+    return `${issue.Description}\nGitlab Issue URL: ${issue.URL}`;
+  }
 
   // -- Private interface
 
