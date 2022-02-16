@@ -7,6 +7,7 @@ import { clubhouseCsvImport } from "./importers/clubhouseCsv";
 import { githubImport } from "./importers/github";
 import { jiraCsvImport } from "./importers/jiraCsv";
 import { linearCsvImporter } from "./importers/linearCsv";
+import { gitlabCsvImporter } from "./importers/gitlabCsv";
 import { pivotalCsvImport } from "./importers/pivotalCsv";
 import { trelloJsonImport } from "./importers/trelloJson";
 import { importIssues } from "./importIssues";
@@ -55,6 +56,10 @@ inquirer.registerPrompt("filePath", require("inquirer-file-path"));
             name: "Linear (CSV export)",
             value: "linearCsv",
           },
+          {
+            name: "Gitlab (CSV export)",
+            value: "gitlabCsv",
+          },
         ],
       },
     ]);
@@ -82,6 +87,9 @@ inquirer.registerPrompt("filePath", require("inquirer-file-path"));
         break;
       case "linearCsv":
         importer = await linearCsvImporter();
+        break;
+      case "gitlabCsv":
+        importer = await gitlabCsvImporter();
         break;
       default:
         console.log(chalk.red(`Invalid importer`));
