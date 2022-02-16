@@ -31,7 +31,7 @@ interface GitlabIssueType {
  *
  * @param filePath  path to csv file
  */
-export class LinearCsvImporter implements Importer {
+export class GitlabCsvImporter implements Importer {
   public constructor(filePath: string) {
     this.filePath = filePath;
   }
