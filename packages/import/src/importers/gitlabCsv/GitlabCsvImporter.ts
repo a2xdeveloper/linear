@@ -88,7 +88,7 @@ export class GitlabCsvImporter implements Importer {
   };
 
   private getStatus(tags: string[]): string {
-    let status = "";
+    let status = "open";
 
     tags.forEach(tag => {
       if (tag.startsWith("workflow")) {

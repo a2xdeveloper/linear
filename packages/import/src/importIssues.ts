@@ -32,12 +32,10 @@ export const importIssues = async (apiKey: string, importer: Importer): Promise<
   const importData = await importer.import();
 
   const teamsQuery = await client.teams();
-  const viewerQuery = await client.viewer;
   const usersQuery = await client.users();
 
   const teams = teamsQuery?.nodes ?? [];
   const users = usersQuery?.nodes?.filter(user => user.active) ?? [];
-  const viewer = viewerQuery?.id;
 
   // Prompt the user to either get or create a team
   const importAnswers = await inquirer.prompt<ImportAnswers>([
@@ -263,7 +261,7 @@ export const importIssues = async (apiKey: string, importer: Importer): Promise<
 
     const assigneeId: string | undefined =
       existingAssigneeId || importAnswers.selfAssign
-        ? viewer
+        ? existingAssigneeId
         : !!importAnswers.targetAssignee && importAnswers.targetAssignee.length > 0
         ? importAnswers.targetAssignee
         : undefined;
@@ -272,7 +270,7 @@ export const importIssues = async (apiKey: string, importer: Importer): Promise<
 
     await client.issueCreate({
       teamId,
-      projectId: (projectId as unknown) as string,
+      projectId: projectId as unknown as string,
       title: issue.title,
       description,
       priority: issue.priority,
